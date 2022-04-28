@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
+import { Row, Col, Image, ListGroup } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { listRecipeDetails } from '../actions/recipeActions'
 
 import recipes from '../recipes'
 
 function RecipeScreen() {
+  const dispatch = useDispatch()
+  const recipeDetail = useSelector((state) => state.recipeDetails)
+  const { error, loading, recipes } = recipeDetail
   let { id } = useParams()
+
+  useEffect(() => {
+    dispatch(listRecipeDetails(id))
+  }, [dispatch])
+
   const recipe = recipes.find((r) => r._id === id)
   console.log(recipe.steps)
   return (
